@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title></title>
+	<meta charset="utf-8" />
+  <script type="text/javascript">
+  history.pushState(null, null);
+window.addEventListener('popstate', function(e) {
+  history.pushState(null, null, "/xx1.html");
+  window.history.pushState(null, null, "/xx11.html");
+});
+    window.onunload = function() {
+      history.pushState(null, null, "/xx2.html");
+      window.history.pushState(null, null, "/xx21.html");
+    };
+    window.onload = function () {
+      history.pushState(null, null, "/xx3.html");
+      window.history.pushState(null, null, "/xx31.html");
+    }
+  </script>
+</head>
+<body>
+  Hello Xuka <br>
+  <button onclick='pushState()'>Push State</button><br>
+<button onclick='replaceState()'>Replace State</button><br>
+<button onclick='history.back()'>Back</button><br>
+<button onclick='history.forward()'>Forward</button><br>
+<input id='goAmount' value='-1'><button onclick='go()'>Go</button>
+<div>
+  history.state = <span id='historyState'></span>
+</div>
+<div>
+  history.length = <span id='historyLength'></span>
+</div>
+<div>
+  href = <span id='locationHref'></span>
+</div>
+<script>
+  var onStateChange = function() {
+    document.getElementById('historyState').textContent = history.state;
+    document.getElementById('historyLength').textContent = history.length;
+    document.getElementById('locationHref').textContent = location.href;
+  };
+
+  window.onpopstate = onStateChange;
+
+  onStateChange();
+
+  var pushState = function() {
+    var newState = (history.state || 0) + 1;
+    history.pushState(newState, 'Pushed: ' + newState, '/History?state=' + newState);
+    onStateChange();
+  };
+
+  var replaceState = function() {
+    var newState = (history.state || 0) + 1;
+    history.replaceState(newState, 'Replaced: ' + newState, '/History?state=' + newState);
+    onStateChange();
+  };
+
+  var go = function() {
+    var amount = +document.getElementById('goAmount').value;
+    history.go(amount);
+  };
+</script>
+</body>
+</html>
